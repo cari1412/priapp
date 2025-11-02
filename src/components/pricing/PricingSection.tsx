@@ -1,11 +1,12 @@
 'use client';
 
-import React from 'react';
+import React, { memo, useCallback } from 'react';
 import { PricingCard } from './PricingCard';
 import { ComparisonTable } from './ComparisonTable';
 import type { PricingPlan, ComparisonRow } from '@/types/pricing';
 
-const pricingPlans: PricingPlan[] = [
+// ✅ ОПТИМИЗАЦИЯ 1: Вынесли данные из компонента (создаются один раз)
+const PRICING_PLANS: PricingPlan[] = [
   {
     id: 'starter',
     name: 'Starter',
@@ -69,7 +70,7 @@ const pricingPlans: PricingPlan[] = [
   },
 ];
 
-const comparisonData: ComparisonRow[] = [
+const COMPARISON_DATA: ComparisonRow[] = [
   {
     feature: 'Пользователей',
     starter: '5',
@@ -124,11 +125,12 @@ interface PricingSectionProps {
   showComparison?: boolean;
 }
 
-export const PricingSection: React.FC<PricingSectionProps> = ({
+// ✅ ОПТИМИЗАЦИЯ 2: Мемоизированный компонент
+export const PricingSection: React.FC<PricingSectionProps> = memo(({
   showComparison = true,
 }) => {
-  // Handle plan selection
-  const handlePlanSelect = (planId: string) => {
+  // ✅ ОПТИМИЗАЦИЯ 3: useCallback для стабильной ссылки на функцию
+  const handlePlanSelect = useCallback((planId: string) => {
     console.log('Selected plan:', planId);
     
     // Send analytics event if gtag is available
@@ -140,20 +142,13 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
       });
     }
     
-    // Add your logic here:
-    // - Navigate to checkout
-    // - Open a modal
-    // - Call API endpoint
-    // Example: window.location.href = `/checkout?plan=${planId}`;
-    
-    // For now, just show an alert
     alert(`Вы выбрали план: ${planId}`);
-  };
+  }, []);
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
-      {/* Grid pattern background */}
-      <div className="fixed inset-0 bg-grid-pattern opacity-20 pointer-events-none" />
+      {/* ✅ ОПТИМИЗАЦИЯ 4: Убрали фиксированный фон (он вызывает repaint) */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none" />
 
       {/* Main Container */}
       <div className="relative container mx-auto px-4 py-20">
@@ -178,7 +173,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
 
         {/* Pricing Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto mb-24">
-          {pricingPlans.map((plan) => (
+          {PRICING_PLANS.map((plan) => (
             <PricingCard key={plan.id} plan={plan} onCtaClick={handlePlanSelect} />
           ))}
         </div>
@@ -189,7 +184,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
             <h2 className="text-3xl font-bold text-center mb-12">
               Сравнение всех возможностей
             </h2>
-            <ComparisonTable data={comparisonData} />
+            <ComparisonTable data={COMPARISON_DATA} />
           </div>
         )}
 
@@ -206,6 +201,8 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
       </div>
     </div>
   );
-};
+});
+
+PricingSection.displayName = 'PricingSection';
 
 export default PricingSection;

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { memo, useMemo, useCallback } from 'react';
 import { Check, X } from 'lucide-react';
 import type { PricingPlan } from '@/types/pricing';
 
@@ -9,14 +9,17 @@ interface PricingCardProps {
   onCtaClick?: (planId: string) => void;
 }
 
-export const PricingCard: React.FC<PricingCardProps> = ({ plan, onCtaClick }) => {
-  const handleClick = () => {
+// ✅ ОПТИМИЗАЦИЯ 1: Мемоизированный компонент
+export const PricingCard: React.FC<PricingCardProps> = memo(({ plan, onCtaClick }) => {
+  // ✅ ОПТИМИЗАЦИЯ 2: Стабильная ссылка на обработчик
+  const handleClick = useCallback(() => {
     if (onCtaClick) {
       onCtaClick(plan.id);
     }
-  };
+  }, [onCtaClick, plan.id]);
 
-  const getCardClasses = () => {
+  // ✅ ОПТИМИЗАЦИЯ 3: Мемоизация классов (вычисляются только при изменении plan)
+  const cardClasses = useMemo(() => {
     const baseClasses = 'glass-card glass-card-hover shine-effect rounded-2xl p-8 relative';
     
     if (plan.highlighted) {
@@ -24,17 +27,17 @@ export const PricingCard: React.FC<PricingCardProps> = ({ plan, onCtaClick }) =>
     }
     
     return baseClasses;
-  };
+  }, [plan.highlighted]);
 
-  const getButtonClasses = () => {
+  const buttonClasses = useMemo(() => {
     if (plan.ctaVariant === 'gradient') {
       return 'btn-gradient w-full py-3 px-6 rounded-xl font-semibold text-white shadow-lg';
     }
     return 'btn-outline-gradient w-full py-3 px-6 rounded-xl font-semibold text-white';
-  };
+  }, [plan.ctaVariant]);
 
   return (
-    <div className={getCardClasses()}>
+    <div className={cardClasses}>
       {/* Badge */}
       {plan.badge && (
         <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
@@ -112,10 +115,12 @@ export const PricingCard: React.FC<PricingCardProps> = ({ plan, onCtaClick }) =>
         </ul>
 
         {/* CTA Button */}
-        <button onClick={handleClick} className={getButtonClasses()}>
+        <button onClick={handleClick} className={buttonClasses}>
           {plan.ctaText}
         </button>
       </div>
     </div>
   );
-};
+});
+
+PricingCard.displayName = 'PricingCard';

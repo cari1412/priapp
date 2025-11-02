@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { memo, useCallback } from 'react';
 import { Check } from 'lucide-react';
 import type { ComparisonRow } from '@/types/pricing';
 
@@ -8,8 +8,10 @@ interface ComparisonTableProps {
   data: ComparisonRow[];
 }
 
-export const ComparisonTable: React.FC<ComparisonTableProps> = ({ data }) => {
-  const renderCell = (value: string | boolean) => {
+// ✅ ОПТИМИЗАЦИЯ 1: Мемоизированный компонент
+export const ComparisonTable: React.FC<ComparisonTableProps> = memo(({ data }) => {
+  // ✅ ОПТИМИЗАЦИЯ 2: Мемоизируем функцию рендера
+  const renderCell = useCallback((value: string | boolean) => {
     if (typeof value === 'boolean') {
       return value ? (
         <Check className="w-5 h-5 text-green-400 mx-auto" strokeWidth={2} />
@@ -29,7 +31,7 @@ export const ComparisonTable: React.FC<ComparisonTableProps> = ({ data }) => {
     }
 
     return <span>{value}</span>;
-  };
+  }, []);
 
   return (
     <div className="glass-card rounded-2xl p-8 overflow-x-auto">
@@ -55,4 +57,6 @@ export const ComparisonTable: React.FC<ComparisonTableProps> = ({ data }) => {
       </table>
     </div>
   );
-};
+});
+
+ComparisonTable.displayName = 'ComparisonTable';
