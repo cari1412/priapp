@@ -1,9 +1,12 @@
 // next.config.ts - ФИНАЛЬНАЯ ВЕРСИЯ ДЛЯ NEXT.JS 16
-// Без устаревших опций
+// reactCompiler на верхнем уровне (не в experimental!)
 
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  // ✅ React Compiler на верхнем уровне (стабильная опция в Next.js 16)
+  reactCompiler: true,
+  
   // Экспериментальные оптимизации
   experimental: {
     optimizePackageImports: ['lucide-react'],
