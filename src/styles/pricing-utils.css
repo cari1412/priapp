@@ -1,10 +1,10 @@
-/* styles/pricing-utils.css */
+/* styles/pricing-utils.css - ОПТИМИЗИРОВАННАЯ ВЕРСИЯ */
 /* ============================================
-   CUSTOM UTILITIES FOR SAAS PRICING SECTION
-   Import this in your global CSS or app.css
+   ОПТИМИЗИРОВАННЫЕ УТИЛИТЫ ДЛЯ PRICING
+   Убраны тяжелые анимации и сложные эффекты
    ============================================ */
 
-/* Glass morphism effects for pricing cards */
+/* Glass morphism effects для pricing cards */
 @utility glass-card {
   @apply backdrop-blur-xl bg-white/10 border border-white/20;
   box-shadow: 
@@ -13,16 +13,17 @@
 }
 
 @utility glass-card-hover {
-  @apply transition-all duration-500 ease-out;
+  @apply transition-all duration-300 ease-out;
   &:hover {
-    @apply bg-white/20 border-white/30 scale-105 -translate-y-2;
+    @apply bg-white/20 border-white/30;
+    transform: translateY(-4px);
     box-shadow: 
       0 20px 60px 0 rgba(0, 0, 0, 0.2),
       inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
   }
 }
 
-/* Gradient backgrounds */
+/* ✅ Упрощенные градиенты без анимаций */
 @utility gradient-purple-blue {
   background: linear-gradient(
     135deg,
@@ -47,22 +48,14 @@
   );
 }
 
-/* Animated gradient for premium card */
+/* ✅ Статичный градиент вместо анимированного */
 @utility gradient-premium {
   background: linear-gradient(
-    -45deg,
+    135deg,
     theme('colors.purple.600'),
     theme('colors.pink.600'),
-    theme('colors.orange.500'),
-    theme('colors.yellow.500')
+    theme('colors.orange.500')
   );
-  background-size: 400% 400%;
-  animation: gradient-shift 8s ease infinite;
-}
-
-@keyframes gradient-shift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
 }
 
 /* Gradient text effects */
@@ -84,109 +77,28 @@
   );
 }
 
-/* Gradient border effect */
-@utility border-gradient {
-  position: relative;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    inset: -2px;
-    border-radius: inherit;
-    padding: 2px;
-    background: linear-gradient(
-      135deg,
-      theme('colors.purple.500'),
-      theme('colors.pink.500'),
-      theme('colors.orange.500')
-    );
-    -webkit-mask: 
-      linear-gradient(#fff 0 0) content-box, 
-      linear-gradient(#fff 0 0);
-    mask: 
-      linear-gradient(#fff 0 0) content-box, 
-      linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-  }
+/* ✅ Упрощенная граница без сложных псевдоэлементов */
+@utility border-gradient-soft {
+  @apply border-2;
+  border-color: rgba(147, 51, 234, 0.5);
 }
 
-/* Animated gradient border for premium card */
-@utility border-gradient-animated {
-  position: relative;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    inset: -2px;
-    border-radius: inherit;
-    padding: 2px;
-    background: linear-gradient(
-      45deg,
-      theme('colors.purple.500'),
-      theme('colors.pink.500'),
-      theme('colors.orange.500'),
-      theme('colors.purple.500')
-    );
-    background-size: 300% 300%;
-    animation: border-flow 4s linear infinite;
-    -webkit-mask: 
-      linear-gradient(#fff 0 0) content-box, 
-      linear-gradient(#fff 0 0);
-    mask: 
-      linear-gradient(#fff 0 0) content-box, 
-      linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-  }
-}
+/* ✅ Убрали анимированную границу - она была тяжелой */
 
-@keyframes border-flow {
-  to { background-position: 300% 0; }
-}
-
-/* Glow effects */
+/* ✅ Упрощенные glow эффекты */
 @utility glow-purple {
-  box-shadow: 
-    0 0 20px rgba(147, 51, 234, 0.3),
-    0 0 40px rgba(147, 51, 234, 0.2),
-    0 0 60px rgba(147, 51, 234, 0.1);
+  box-shadow: 0 0 30px rgba(147, 51, 234, 0.3);
 }
 
 @utility glow-blue {
-  box-shadow: 
-    0 0 20px rgba(59, 130, 246, 0.3),
-    0 0 40px rgba(59, 130, 246, 0.2),
-    0 0 60px rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
 }
 
 @utility glow-pink {
-  box-shadow: 
-    0 0 20px rgba(236, 72, 153, 0.3),
-    0 0 40px rgba(236, 72, 153, 0.2),
-    0 0 60px rgba(236, 72, 153, 0.1);
+  box-shadow: 0 0 30px rgba(236, 72, 153, 0.3);
 }
 
-/* Pulsing glow animation */
-@utility glow-pulse {
-  animation: pulse-glow 2s ease-in-out infinite;
-}
-
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 
-      0 0 20px rgba(147, 51, 234, 0.4),
-      0 0 40px rgba(147, 51, 234, 0.2);
-  }
-  50% {
-    box-shadow: 
-      0 0 30px rgba(147, 51, 234, 0.6),
-      0 0 60px rgba(147, 51, 234, 0.3),
-      0 0 80px rgba(147, 51, 234, 0.1);
-  }
-}
+/* ✅ Убрали пульсирующую анимацию - она вызывала постоянный repaint */
 
 /* Badge effects */
 @utility badge-premium {
@@ -209,72 +121,42 @@
   box-shadow: 0 4px 12px rgba(147, 51, 234, 0.4);
 }
 
-/* Button effects */
+/* ✅ Оптимизированные кнопки - используем transform вместо scale для лучшей производительности */
 @utility btn-gradient {
-  @apply relative overflow-hidden transition-all duration-300;
+  @apply relative overflow-hidden transition-transform duration-200;
   background: linear-gradient(
     135deg,
     theme('colors.purple.600'),
     theme('colors.pink.600')
   );
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.3),
-      transparent
-    );
-    transition: left 0.5s;
-  }
-  
-  &:hover::before {
-    left: 100%;
-  }
+  will-change: transform;
   
   &:hover {
-    @apply scale-105 shadow-2xl;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(147, 51, 234, 0.4);
   }
   
   &:active {
-    @apply scale-95;
+    transform: translateY(0);
   }
 }
 
 @utility btn-outline-gradient {
-  @apply relative bg-transparent border-2 border-transparent transition-all duration-300;
-  background-clip: padding-box;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    inset: -2px;
-    border-radius: inherit;
-    background: linear-gradient(
-      135deg,
-      theme('colors.purple.500'),
-      theme('colors.pink.500')
-    );
-    z-index: -1;
-  }
+  @apply relative bg-transparent border-2 transition-transform duration-200;
+  border-color: theme('colors.purple.500');
+  will-change: transform;
   
   &:hover {
-    @apply scale-105;
+    transform: translateY(-2px);
     background: linear-gradient(
       135deg,
-      theme('colors.purple.600'),
-      theme('colors.pink.600')
+      rgba(147, 51, 234, 0.2),
+      rgba(236, 72, 153, 0.2)
     );
   }
 }
 
-/* Checkmark icon with gradient */
+/* Checkmark icon с градиентом */
 @utility check-gradient {
   @apply inline-flex items-center justify-center w-5 h-5 rounded-full;
   background: linear-gradient(
@@ -284,46 +166,33 @@
   );
 }
 
-/* Shine effect on hover */
-@utility shine-effect {
-  @apply relative overflow-hidden;
-  
-  &::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -50%;
-    bottom: -50%;
-    left: -50%;
-    background: linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0.1) 50%,
-      rgba(255, 255, 255, 0) 100%
-    );
-    transform: translateX(-100%) translateY(-100%) rotate(45deg);
-    transition: transform 0.6s;
-  }
-  
-  &:hover::after {
-    transform: translateX(100%) translateY(100%) rotate(45deg);
-  }
+/* ✅ Убрали shine effect - он был ресурсоёмким */
+
+/* ✅ Простая CSS Grid pattern вместо фиксированного фона */
+@utility bg-grid-pattern {
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 50px 50px;
 }
 
-/* Fade in animation on scroll */
+/* ✅ Fade in animation - используется один раз при загрузке */
 @utility fade-in-up {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  animation: fadeInUp 0.6s ease-out;
 }
 
-@utility fade-in-up-visible {
-  opacity: 1;
-  transform: translateY(0);
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Stagger animation delays */
 @utility delay-100 { animation-delay: 100ms; }
 @utility delay-200 { animation-delay: 200ms; }
 @utility delay-300 { animation-delay: 300ms; }
-@utility delay-400 { animation-delay: 400ms; }

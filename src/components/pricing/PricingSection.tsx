@@ -1,11 +1,12 @@
-'use client';
+// components/pricing/PricingSection.tsx - ОПТИМИЗИРОВАННАЯ ВЕРСИЯ
+// ✅ Теперь Server Component (убрали 'use client')
 
-import React, { memo, useCallback } from 'react';
+import React from 'react';
 import { PricingCard } from './PricingCard';
 import { ComparisonTable } from './ComparisonTable';
 import type { PricingPlan, ComparisonRow } from '@/types/pricing';
 
-// ✅ ОПТИМИЗАЦИЯ 1: Вынесли данные из компонента (создаются один раз)
+// ✅ Данные вынесены в константы (создаются один раз при сборке)
 const PRICING_PLANS: PricingPlan[] = [
   {
     id: 'starter',
@@ -125,29 +126,13 @@ interface PricingSectionProps {
   showComparison?: boolean;
 }
 
-// ✅ ОПТИМИЗАЦИЯ 2: Мемоизированный компонент
-export const PricingSection: React.FC<PricingSectionProps> = memo(({
+// ✅ Server Component - рендерится на сервере
+export function PricingSection({
   showComparison = true,
-}) => {
-  // ✅ ОПТИМИЗАЦИЯ 3: useCallback для стабильной ссылки на функцию
-  const handlePlanSelect = useCallback((planId: string) => {
-    console.log('Selected plan:', planId);
-    
-    // Send analytics event if gtag is available
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'select_plan', {
-        plan_id: planId,
-        event_category: 'pricing',
-        event_label: planId,
-      });
-    }
-    
-    alert(`Вы выбрали план: ${planId}`);
-  }, []);
-
+}: PricingSectionProps) {
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
-      {/* ✅ ОПТИМИЗАЦИЯ 4: Убрали фиксированный фон (он вызывает repaint) */}
+      {/* ✅ Статичный паттерн без анимаций */}
       <div className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none" />
 
       {/* Main Container */}
@@ -174,7 +159,7 @@ export const PricingSection: React.FC<PricingSectionProps> = memo(({
         {/* Pricing Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto mb-24">
           {PRICING_PLANS.map((plan) => (
-            <PricingCard key={plan.id} plan={plan} onCtaClick={handlePlanSelect} />
+            <PricingCard key={plan.id} plan={plan} />
           ))}
         </div>
 
@@ -201,8 +186,6 @@ export const PricingSection: React.FC<PricingSectionProps> = memo(({
       </div>
     </div>
   );
-});
-
-PricingSection.displayName = 'PricingSection';
+}
 
 export default PricingSection;

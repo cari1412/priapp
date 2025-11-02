@@ -1,40 +1,39 @@
 'use client';
 
-import React, { memo, useMemo, useCallback } from 'react';
+import React from 'react';
 import { Check, X } from 'lucide-react';
 import type { PricingPlan } from '@/types/pricing';
 
 interface PricingCardProps {
   plan: PricingPlan;
-  onCtaClick?: (planId: string) => void;
 }
 
-// ✅ ОПТИМИЗАЦИЯ 1: Мемоизированный компонент
-export const PricingCard: React.FC<PricingCardProps> = memo(({ plan, onCtaClick }) => {
-  // ✅ ОПТИМИЗАЦИЯ 2: Стабильная ссылка на обработчик
-  const handleClick = useCallback(() => {
-    if (onCtaClick) {
-      onCtaClick(plan.id);
-    }
-  }, [onCtaClick, plan.id]);
-
-  // ✅ ОПТИМИЗАЦИЯ 3: Мемоизация классов (вычисляются только при изменении plan)
-  const cardClasses = useMemo(() => {
-    const baseClasses = 'glass-card glass-card-hover shine-effect rounded-2xl p-8 relative';
+// ✅ Убрали мемоизацию - React Compiler сделает это автоматически
+export function PricingCard({ plan }: PricingCardProps) {
+  // ✅ Упростили обработчик клика
+  const handleClick = () => {
+    console.log('Selected plan:', plan.id);
     
-    if (plan.highlighted) {
-      return `${baseClasses} border-gradient-animated glow-pulse`;
+    // Send analytics event if gtag is available
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'select_plan', {
+        plan_id: plan.id,
+        event_category: 'pricing',
+        event_label: plan.id,
+      });
     }
     
-    return baseClasses;
-  }, [plan.highlighted]);
+    alert(`Вы выбрали план: ${plan.id}`);
+  };
 
-  const buttonClasses = useMemo(() => {
-    if (plan.ctaVariant === 'gradient') {
-      return 'btn-gradient w-full py-3 px-6 rounded-xl font-semibold text-white shadow-lg';
-    }
-    return 'btn-outline-gradient w-full py-3 px-6 rounded-xl font-semibold text-white';
-  }, [plan.ctaVariant]);
+  // ✅ Упростили классы (без useMemo - React Compiler оптимизирует)
+  const cardClasses = plan.highlighted
+    ? 'glass-card glass-card-hover rounded-2xl p-8 relative border-gradient-soft'
+    : 'glass-card glass-card-hover rounded-2xl p-8 relative';
+
+  const buttonClasses = plan.ctaVariant === 'gradient'
+    ? 'btn-gradient w-full py-3 px-6 rounded-xl font-semibold text-white shadow-lg'
+    : 'btn-outline-gradient w-full py-3 px-6 rounded-xl font-semibold text-white';
 
   return (
     <div className={cardClasses}>
@@ -54,9 +53,9 @@ export const PricingCard: React.FC<PricingCardProps> = memo(({ plan, onCtaClick 
         </div>
       )}
 
-      {/* Premium gradient overlay */}
+      {/* ✅ Убрали анимированный градиент для enterprise */}
       {plan.id === 'enterprise' && (
-        <div className="absolute inset-0 gradient-premium opacity-10 pointer-events-none rounded-2xl" />
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 to-pink-600/10 pointer-events-none rounded-2xl" />
       )}
 
       {/* Content */}
@@ -121,6 +120,4 @@ export const PricingCard: React.FC<PricingCardProps> = memo(({ plan, onCtaClick 
       </div>
     </div>
   );
-});
-
-PricingCard.displayName = 'PricingCard';
+}
