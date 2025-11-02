@@ -1,0 +1,329 @@
+/* styles/pricing-utils.css */
+/* ============================================
+   CUSTOM UTILITIES FOR SAAS PRICING SECTION
+   Import this in your global CSS or app.css
+   ============================================ */
+
+/* Glass morphism effects for pricing cards */
+@utility glass-card {
+  @apply backdrop-blur-xl bg-white/10 border border-white/20;
+  box-shadow: 
+    0 8px 32px 0 rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+}
+
+@utility glass-card-hover {
+  @apply transition-all duration-500 ease-out;
+  &:hover {
+    @apply bg-white/20 border-white/30 scale-105 -translate-y-2;
+    box-shadow: 
+      0 20px 60px 0 rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* Gradient backgrounds */
+@utility gradient-purple-blue {
+  background: linear-gradient(
+    135deg,
+    theme('colors.purple.600') 0%,
+    theme('colors.blue.600') 100%
+  );
+}
+
+@utility gradient-pink-orange {
+  background: linear-gradient(
+    135deg,
+    theme('colors.pink.500') 0%,
+    theme('colors.orange.500') 100%
+  );
+}
+
+@utility gradient-cyan-blue {
+  background: linear-gradient(
+    135deg,
+    theme('colors.cyan.400') 0%,
+    theme('colors.blue.600') 100%
+  );
+}
+
+/* Animated gradient for premium card */
+@utility gradient-premium {
+  background: linear-gradient(
+    -45deg,
+    theme('colors.purple.600'),
+    theme('colors.pink.600'),
+    theme('colors.orange.500'),
+    theme('colors.yellow.500')
+  );
+  background-size: 400% 400%;
+  animation: gradient-shift 8s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Gradient text effects */
+@utility gradient-text-purple {
+  @apply bg-clip-text text-transparent;
+  background-image: linear-gradient(
+    to right,
+    theme('colors.purple.600'),
+    theme('colors.pink.600')
+  );
+}
+
+@utility gradient-text-blue {
+  @apply bg-clip-text text-transparent;
+  background-image: linear-gradient(
+    to right,
+    theme('colors.cyan.500'),
+    theme('colors.blue.600')
+  );
+}
+
+/* Gradient border effect */
+@utility border-gradient {
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(
+      135deg,
+      theme('colors.purple.500'),
+      theme('colors.pink.500'),
+      theme('colors.orange.500')
+    );
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}
+
+/* Animated gradient border for premium card */
+@utility border-gradient-animated {
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(
+      45deg,
+      theme('colors.purple.500'),
+      theme('colors.pink.500'),
+      theme('colors.orange.500'),
+      theme('colors.purple.500')
+    );
+    background-size: 300% 300%;
+    animation: border-flow 4s linear infinite;
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}
+
+@keyframes border-flow {
+  to { background-position: 300% 0; }
+}
+
+/* Glow effects */
+@utility glow-purple {
+  box-shadow: 
+    0 0 20px rgba(147, 51, 234, 0.3),
+    0 0 40px rgba(147, 51, 234, 0.2),
+    0 0 60px rgba(147, 51, 234, 0.1);
+}
+
+@utility glow-blue {
+  box-shadow: 
+    0 0 20px rgba(59, 130, 246, 0.3),
+    0 0 40px rgba(59, 130, 246, 0.2),
+    0 0 60px rgba(59, 130, 246, 0.1);
+}
+
+@utility glow-pink {
+  box-shadow: 
+    0 0 20px rgba(236, 72, 153, 0.3),
+    0 0 40px rgba(236, 72, 153, 0.2),
+    0 0 60px rgba(236, 72, 153, 0.1);
+}
+
+/* Pulsing glow animation */
+@utility glow-pulse {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 
+      0 0 20px rgba(147, 51, 234, 0.4),
+      0 0 40px rgba(147, 51, 234, 0.2);
+  }
+  50% {
+    box-shadow: 
+      0 0 30px rgba(147, 51, 234, 0.6),
+      0 0 60px rgba(147, 51, 234, 0.3),
+      0 0 80px rgba(147, 51, 234, 0.1);
+  }
+}
+
+/* Badge effects */
+@utility badge-premium {
+  @apply inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full;
+  background: linear-gradient(
+    135deg,
+    theme('colors.yellow.400'),
+    theme('colors.orange.500')
+  );
+  box-shadow: 0 4px 12px rgba(251, 146, 60, 0.4);
+}
+
+@utility badge-popular {
+  @apply inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full;
+  background: linear-gradient(
+    135deg,
+    theme('colors.blue.500'),
+    theme('colors.purple.600')
+  );
+  box-shadow: 0 4px 12px rgba(147, 51, 234, 0.4);
+}
+
+/* Button effects */
+@utility btn-gradient {
+  @apply relative overflow-hidden transition-all duration-300;
+  background: linear-gradient(
+    135deg,
+    theme('colors.purple.600'),
+    theme('colors.pink.600')
+  );
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
+    transition: left 0.5s;
+  }
+  
+  &:hover::before {
+    left: 100%;
+  }
+  
+  &:hover {
+    @apply scale-105 shadow-2xl;
+  }
+  
+  &:active {
+    @apply scale-95;
+  }
+}
+
+@utility btn-outline-gradient {
+  @apply relative bg-transparent border-2 border-transparent transition-all duration-300;
+  background-clip: padding-box;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      theme('colors.purple.500'),
+      theme('colors.pink.500')
+    );
+    z-index: -1;
+  }
+  
+  &:hover {
+    @apply scale-105;
+    background: linear-gradient(
+      135deg,
+      theme('colors.purple.600'),
+      theme('colors.pink.600')
+    );
+  }
+}
+
+/* Checkmark icon with gradient */
+@utility check-gradient {
+  @apply inline-flex items-center justify-center w-5 h-5 rounded-full;
+  background: linear-gradient(
+    135deg,
+    theme('colors.green.400'),
+    theme('colors.emerald.500')
+  );
+}
+
+/* Shine effect on hover */
+@utility shine-effect {
+  @apply relative overflow-hidden;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    bottom: -50%;
+    left: -50%;
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    transition: transform 0.6s;
+  }
+  
+  &:hover::after {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+/* Fade in animation on scroll */
+@utility fade-in-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+@utility fade-in-up-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger animation delays */
+@utility delay-100 { animation-delay: 100ms; }
+@utility delay-200 { animation-delay: 200ms; }
+@utility delay-300 { animation-delay: 300ms; }
+@utility delay-400 { animation-delay: 400ms; }
